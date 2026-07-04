@@ -9,7 +9,7 @@ services:
 
   worker:
     build: .
-    image: yukimochi/activity-relay
+    image: neodb/neodb-relay
     working_dir: /var/lib/relay
     restart: always
     command: relay worker
@@ -24,7 +24,7 @@ services:
 
   server:
     build: .
-    image: yukimochi/activity-relay
+    image: neodb/neodb-relay
     working_dir: /var/lib/relay
     restart: always
     command: relay server

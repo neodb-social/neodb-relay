@@ -70,6 +70,7 @@ func initialize(globalConfig *models.RelayConfig) error {
 }
 
 func handlersRegister() {
+	http.HandleFunc("/", handleTopPage)
 	http.HandleFunc("/.well-known/nodeinfo", handleNodeinfoLink)
 	http.HandleFunc("/.well-known/webfinger", handleWebfinger)
 	http.HandleFunc("/nodeinfo/2.1", handleNodeinfo)

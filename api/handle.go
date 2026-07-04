@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	"github.com/yukimochi/Activity-Relay/models"
@@ -78,6 +79,11 @@ func handleNodeinfo(writer http.ResponseWriter, request *http.Request) {
 }
 
 func handleRelayActor(writer http.ResponseWriter, request *http.Request) {
+	if strings.Contains(strings.ToLower(request.Header.Get("User-Agent")), "neodb/") == false {
+		writer.WriteHeader(418)
+		writer.Write([]byte("Relay service for NeoDB only"))
+		return
+	}
 	if request.Method == "GET" {
 		relayActor, err := json.Marshal(&RelayActor)
 		if err != nil {
@@ -96,6 +102,11 @@ func handleRelayActor(writer http.ResponseWriter, request *http.Request) {
 }
 
 func handleInbox(writer http.ResponseWriter, request *http.Request, activityDecoder func(*http.Request) (*models.Activity, *models.Actor, []byte, error)) {
+	if strings.Contains(strings.ToLower(request.Header.Get("User-Agent")), "neodb/") == false {
+		writer.WriteHeader(418)
+		writer.Write([]byte("Relay service for NeoDB only"))
+		return
+	}
 	switch request.Method {
 	case "POST":
 		activity, actor, body, err := activityDecoder(request)
